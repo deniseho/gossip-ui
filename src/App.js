@@ -1,26 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import Table from './Table.js';
 
-function App() {
+const NODES_DATA_URL = 'https://api.myjson.com/bins/kzvhg';
+
+
+const App = () => {
+  const [data, setData] = useState([]);
+
+  fetch(NODES_DATA_URL)
+    .then(response => response.json())
+    .then(jsonResponse => {
+      const result = Object.keys(jsonResponse).map(function(key) {
+        jsonResponse[key].ip = key;
+        return jsonResponse[key];
+      });
+      setData(result);
+    })
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Table data={data}/>
+  )
 }
 
 export default App;
